@@ -162,9 +162,19 @@ email status until they click the link in the confirmation email.`
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    // n/a
+
+    notes: {
+      collection: 'note',
+      via: 'owner'
+    }
 
   },
 
+  findNotes: async function(opts) {
+
+    var user = await User.findOne({ id: opts.userId }).populate('notes');
+
+    return user.notes;
+  }
 
 };

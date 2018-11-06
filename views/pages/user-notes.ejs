@@ -1,0 +1,43 @@
+<div id="user-notes" v-cloak>
+
+  <div class="float-right">
+    <button class="btn btn-outline-primary mr-2 mt-4 mb-4" @click="clickOpenAddNoteModalButton()">Add a Note</button>
+    <button class="btn btn-outline-primary mr-2 mt-4 mb-4" @click="clickOpenAddNoteModalButton()">Delete Notes</button>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+    <th>Notes</th>
+    </thead>
+    <tbody>
+    <tr v-for="note in notes">
+      <td class="d-none d-md-table-cell">{{note.content}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+
+  <modal class="example-modal" v-if="addNoteModalVisible" @close="closeAddNoteModal()" v-cloak>
+    <ajax-form action="addNote" :syncing.sync="syncing" :cloud-error.sync="cloudError"
+               @submitted="submittedForm()" :handle-parsing="handleParsingForm">
+      <div class="modal-header">
+        <h2 class="modal-title">Add a Note</h2>
+        <hr/>
+        <button type="button" class="modal-close-button" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="confirm-password">Note</label>
+          <input class="form-control" id="note-content" name="note-content" type="text"
+                 :class="[formErrors.noteContent ? 'is-invalid' : '']" v-model.trim="formData.noteContent">
+          <div class="invalid-feedback" v-if="formErrors.noteContent">Your note cannot be blank.</div>
+        </div>
+      </div>
+      <div class="modal-footer flex-row-reverse justify-content-between">
+        <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+        <ajax-button type="submit" :syncing="syncing" class="btn btn-primary">Save</ajax-button>
+      </div>
+    </ajax-form>
+  </modal>
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>
