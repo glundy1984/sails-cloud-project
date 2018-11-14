@@ -17,6 +17,8 @@ parasails.registerPage('user-notes', {
     cloudError: '',
 
     addNoteModalVisible: false,
+
+    editNoteModalVisible: false,
   },
 
   //  ╦  ╦╔═╗╔═╗╔═╗╦ ╦╔═╗╦  ╔═╗
@@ -35,12 +37,24 @@ parasails.registerPage('user-notes', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
 
-    clickOpenAddNoteModalButton: async function() {
+    openAddNoteModal: async function() {
       this.addNoteModalVisible = true;
+      this.formData.noteId = undefined;
+      this.formData.noteContent = undefined;
     },
 
     closeAddNoteModal: async function() {
       this.addNoteModalVisible = false;
+    },
+
+    openEditNoteModal: async function(note) {
+      this.formData.noteId = note.id;
+      this.formData.noteContent = note.content;
+      this.editNoteModalVisible = true;
+    },
+
+    closeEditNoteModal: async function() {
+      this.editNoteModalVisible = false;
     },
 
     submittedForm: async function() {
@@ -51,14 +65,35 @@ parasails.registerPage('user-notes', {
       window.location = '/user-notes';
     },
 
-    handleParsingForm: function() {
+    handleParsingAddForm: function() {
       // Clear out any pre-existing error messages.
       this.formErrors = {};
 
       var argins = { noteContent: this.formData.noteContent };
 
       // Validate password:
-      if(!argins.noteContent) {
+      if (!argins.noteContent) {
+        this.formErrors.noteContent = true;
+      }
+
+      // If there were any issues, they've already now been communicated to the user,
+      // so simply return undefined.  (This signifies that the submission should be
+      // cancelled.)
+      if (Object.keys(this.formErrors).length > 0) {
+        return;
+      }
+
+      return argins;
+    },
+
+    handleParsingEditForm: function() {
+      // Clear out any pre-existing error messages.
+      this.formErrors = {};
+
+      var argins = { noteId: this.formData.noteId, noteContent: this.formData.noteContent };
+
+      // Validate password:
+      if (!argins.noteContent) {
         this.formErrors.noteContent = true;
       }
 
