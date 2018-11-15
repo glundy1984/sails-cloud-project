@@ -19,6 +19,12 @@ parasails.registerPage('user-notes', {
     addNoteModalVisible: false,
 
     editNoteModalVisible: false,
+
+    deleteNotesModalVisible: false,
+
+    deleteDisabled: true,
+
+    notesForDeletion: [],
   },
 
   //  ╦  ╦╔═╗╔═╗╔═╗╦ ╦╔═╗╦  ╔═╗
@@ -55,6 +61,22 @@ parasails.registerPage('user-notes', {
 
     closeEditNoteModal: async function() {
       this.editNoteModalVisible = false;
+    },
+
+    openDeleteNotesModal: async function() {
+      this.deleteNotesModalVisible = true;
+    },
+
+    closeDeleteNotesModal: async function() {
+      this.deleteNotesModalVisible = false;
+    },
+
+    checkDeleteBtn: async function() {
+      if (this.notesForDeletion.length > 0) {
+        this.deleteDisabled = false;
+      } else {
+        this.deleteDisabled = true;
+      }
     },
 
     submittedForm: async function() {
@@ -105,6 +127,10 @@ parasails.registerPage('user-notes', {
       }
 
       return argins;
+    },
+
+    handleParsingDeleteForm: function() {
+      return { noteIds: this.notesForDeletion.map(Number) };
     },
   }
 });
