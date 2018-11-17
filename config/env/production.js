@@ -59,6 +59,10 @@ module.exports = {
       //  ```
       //--------------------------------------------------------------------------
 
+      // PostgreSQL
+      // adapter: 'sails-postgresql',
+      // url: 'postgresql://sailsuser:password@localhost:5432/sailsdb'
+
       /****************************************************************************
       *                                                                           *
       * More adapter-specific options                                             *
